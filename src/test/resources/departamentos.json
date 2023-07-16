@@ -1,0 +1,17 @@
+[
+  {
+    "id": 8,
+    "nombre": "Atlantico",
+    "idPais": 90
+  },
+  {
+    "id": 23,
+    "nombre": "Cordoba",
+    "idPais": 90
+  },
+  {
+    "id": 86,
+    "nombre": "Putumayo",
+    "idPais": 90
+  }
+]

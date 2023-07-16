@@ -1,0 +1,4 @@
+#Archivo propiedades de acuerdo al perfil maven seleccionado
+spring:
+  profiles:
+    active: '@activatedProperties@'

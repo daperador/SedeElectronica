@@ -1,0 +1,75 @@
+## Configuración B2C
+co.gov.runt.jwt.azure:
+  connectionTimeout: ${azureb2cconnectionTimeout:15000}
+  identityPoolUrl: ${azureb2cidentityPoolUrl:https://b2crunt2.b2clogin.com/3b077cc3-6f78-4641-970a-be4c52339666/v2.0/}
+  jwkUrl: ${azureb2cjwkUrl:https://b2crunt2.b2clogin.com/b2crunt2.onmicrosoft.com/discovery/v2.0/keys?p=b2c_1a_signup_signin}
+  readTimeout: ${azureb2creadTimeout:15000}
+
+## Feign client
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 20000
+        loggerLevel: full
+        readTimeout: 20000
+
+## Configuración Kafka
+kafka:
+  bootstrapAddress: ${kakfaurl:http://40.74.235.59:9092}
+
+## Configuración logger
+logging:
+  level:
+    root: INFO
+  folder-path: .logs/
+  max-file-size: 1GB
+  enable-controllers-io-logs: true
+
+## Configuración Server
+server:
+  port: 8080
+  servlet:
+    context-path: /SedeElectronicaConsultas
+
+## Configuración Spring
+spring:
+  application:
+    name: SedeElectronicaConsultas
+    description: Estructura base RUNT 2.0 - SedeElectronicaConsultas
+    version: 1.0.0
+  datasource:
+    driver-class-name: oracle.jdbc.OracleDriver
+    password: ${cswtramitesrnapassword:CSWTRAMITESRNA27sep22}
+    url: ${cswtramitesrnaconexion:jdbc:oracle:thin:@//10.40.1.11/DESARUNT.runt.com.co}
+    username: ${cswtramitesrnausername:CSWTRAMITESRNA}
+  jpa:
+    database-platform: org.hibernate.dialect.Oracle10gDialect
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+  main:
+    allow-bean-definition-overriding: true
+  jackson:
+    time-zone: America/Bogota
+
+## Configuración de ambiente
+authentication:
+  required: ${authenticationrequired:true}
+
+## Configuración Actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+      probes:
+        enabled: true
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
