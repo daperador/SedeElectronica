@@ -20,4 +20,6 @@ public interface AutomotorDTO {
   public String getColor();
 
   public String getEstado();
+
+  public Long getIdAutomotor();
 }

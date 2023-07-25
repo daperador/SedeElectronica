@@ -98,7 +98,52 @@ import lombok.Setter;
         WHERE persona_tipoident_idtipdoc = :tipoDocumento
           AND persona_nrodocume = :numeroDocumento
         order by LICECONDU_FECHEXPED DESC
-                                    """)
+                                    """),
+    @NamedNativeQuery(name="Persona.detalleLicencia", query="""
+      SELECT 
+      CASE WHEN CATLICCON_CATEGORIA_IDCATEGOR IS NULL 
+           THEN LICECONDU_CATEGORIA_IDCATEGOR
+           ELSE CATLICCON_CATEGORIA_IDCATEGOR
+      END AS CATEGORIA,
+      LICECONDU_CATEANTER categoriaAnterior 
+      ,CASE WHEN CATLICCON_FECHEXPED IS NULL 
+            THEN LICECONDU_FECHEXPED
+            ELSE CATLICCON_FECHEXPED
+      END fechaExpedicion
+      ,CASE WHEN CATLICCON_FECHVENCI IS NULL 
+            THEN LICECONDU_FECHVENCI
+            ELSE CATLICCON_FECHVENCI
+      END fechaVencimiento
+      FROM RUNTPROD.EV_LICECONDU 
+      JOIN runtprod.tr_persona ON persona_idpersona=LICECONDU_PERSNATUR_IDPERSONA
+      LEFT JOIN RUNTPROD.RC_CATLICCON ON LICECONDU_NROLICENC=CATLICCON_LICECONDU_NROLICENC 
+     WHERE LICECONDU_NROLICENC=:nroLicencia
+       AND persona_tipoident_idtipdoc = :tipoDocumento
+             AND persona_nrodocume = :numeroDocumento
+        """),
+    @NamedNativeQuery(name="Persona.solicitudes", query="""
+      SELECT 
+          DISTINCT SOLICITUD_IDENSOLIC AS idSolicitud ,
+          SOLICITUD_PLACA_NUMPLACA AS identificaddor ,
+          SOLICITUD_FECHREGIS AS fechaRegistro ,
+          SOLISERVI_ESTADOSOL_NOMBRE AS estado ,
+          TR.TRAMITE_TIPOTRAMI_CODTRAMIT AS tramite ,
+          TRAMITE_ESTATRAMI_NOMBRE AS estadoTramite ,
+          TIPOTRAMI_DESCRIPCI AS descripcion ,
+          EM.EMPRESA_RAZOSOCIA AS autoridadTransito,
+          TREG.TIPREGSOL_NOMBRE AS registro
+        FROM runtprod.GE_SOLICITUD SL
+        join runtprod.GE_SOLISERVI SS on SL.SOLICITUD_IDENSOLIC=SS.SOLISERVI_SOLICITUD_IDENSOLIC
+        join runtprod.GE_TRAMITE TR on SL.SOLICITUD_IDENSOLIC=TR.TRAMITE_SOLICITUD_IDENSOLIC
+        join runtprod.PA_TIPOTRAMI TT on TR.TRAMITE_TIPOTRAMI_CODTRAMIT=TT.TIPOTRAMI_CODTRAMIT
+        join runtprod.GE_AUTOTRANS OT on SL.SOLICITUD_AUTOTRANS_IDAUTTRA=OT.AUTOTRANS_IDAUTTRA
+        join runtprod.GE_EMPRESA EM on OT.AUTOTRANS_EMPRESA_PERSONA=EM.EMPRESA_PERSONA_IDPERSONA
+        join RUNTPROD.PA_TIPREGSOL TREG on TREG.TIPREGSOL_ID = TT.TIPOTRAMI_TIPOREGIS_IDTIPOREG
+        JOIN runtprod.tr_persona tp ON tp.persona_idpersona=SOLICITUD_PERSONA_IDPERSONA
+        WHERE persona_tipoident_idtipdoc = :tipoDocumento
+          AND persona_nrodocume = :numeroDocumento
+        ORDER BY SOLICITUD_FECHREGIS DESC, SOLICITUD_IDENSOLIC
+        """)
 })
 @Getter
 @Setter

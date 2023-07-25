@@ -4,8 +4,10 @@
  */
 package co.gov.runt.rnet.pvo.sedeelectronicaconsultas.jpa.repository;
 
+import co.gov.runt.rnet.pvo.sedeelectronicaconsultas.dto.DetalleLicenciaDTO;
 import co.gov.runt.rnet.pvo.sedeelectronicaconsultas.dto.LicenciaDTO;
 import co.gov.runt.rnet.pvo.sedeelectronicaconsultas.dto.PersonaDTO;
+import co.gov.runt.rnet.pvo.sedeelectronicaconsultas.dto.SolicitudesDTO;
 import co.gov.runt.rnet.pvo.sedeelectronicaconsultas.jpa.entity.PersonaEntity;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,4 +23,10 @@ public interface PersonaRepository extends JpaRepository<PersonaEntity, Long> {
 
   @Query(name = "Persona.informacionLicencia", nativeQuery = true)
   public List<LicenciaDTO> consultaLicencias(String tipoDocumento, String numeroDocumento);
+
+  @Query(name = "Persona.detalleLicencia", nativeQuery = true)
+  public List<DetalleLicenciaDTO> consultaDetalleLicencia(String nroLicencia, String tipoDocumento, String numeroDocumento);
+
+  @Query(name = "Persona.solicitudes", nativeQuery = true)
+  public List<SolicitudesDTO> consultaSolicitud(String tipoDocumento, String numeroDocumento);
 }
