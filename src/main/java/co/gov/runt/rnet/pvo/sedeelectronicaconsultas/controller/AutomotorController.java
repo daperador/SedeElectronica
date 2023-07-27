@@ -7,9 +7,9 @@ package co.gov.runt.rnet.pvo.sedeelectronicaconsultas.controller;
 import co.gov.runt.rnet.pvo.sedeelectronicaconsultas.dto.AutomotorDTO;
 import co.gov.runt.rnet.pvo.sedeelectronicaconsultas.dto.AutomotorInDTO;
 import co.gov.runt.rnet.pvo.sedeelectronicaconsultas.dto.DetalleAutomotorDTO;
+import co.gov.runt.rnet.pvo.sedeelectronicaconsultas.dto.RtmDTO;
 import co.gov.runt.rnet.pvo.sedeelectronicaconsultas.dto.SoatDTO;
 import co.gov.runt.rnet.pvo.sedeelectronicaconsultas.jpa.repository.AutomotorRepository;
-import co.gov.runt.rnf.procesadorsolicitudes.annotations.PrintLogs;
 import co.gov.runt.utilidades.exception.ElementoNoEncontradoException;
 import co.gov.runt.utilidades.utilities.InformacionUsuario;
 import java.util.List;
@@ -37,7 +37,6 @@ public class AutomotorController {
    * @return Lista de departamentos
    * @throws ElementoNoEncontradoException Error cuando no se pueden consultar los departamentos
    */
-  @PrintLogs(methodName = "Obtener automotores por propietario")
   @GetMapping(path = "/propiedad", produces = MediaType.APPLICATION_JSON_VALUE)
   public List<AutomotorDTO> consultaPorPropietario() throws ElementoNoEncontradoException {
     return automotorRepository.consultarPorPropietario(
@@ -49,11 +48,12 @@ public class AutomotorController {
    *
    * @return Lista de detalle de automotorres
    */
-  @PrintLogs(methodName = "Obtener automotores por propietario")
   @PostMapping(path = "/datosGenerales", produces = MediaType.APPLICATION_JSON_VALUE)
-  public List<DetalleAutomotorDTO> consultaGeneralAutomotor(@RequestBody AutomotorInDTO entrada ) {
-    return automotorRepository.consultarPorId(entrada.getIdAutomotor(),
-        informacionUsuario.getTipoDocUsuario(), informacionUsuario.getNumDocUsuario());
+  public List<DetalleAutomotorDTO> consultaGeneralAutomotor(@RequestBody AutomotorInDTO entrada) {
+    return automotorRepository.consultarPorId(
+        entrada.getIdAutomotor(),
+        informacionUsuario.getTipoDocUsuario(),
+        informacionUsuario.getNumDocUsuario());
   }
 
   /**
@@ -61,9 +61,18 @@ public class AutomotorController {
    *
    * @return Lista de detalle de automotorres
    */
-  @PrintLogs(methodName = "Obtener automotores por propietario")
   @PostMapping(path = "/consultaSoat", produces = MediaType.APPLICATION_JSON_VALUE)
-  public List<SoatDTO> consultaSoat(@RequestBody AutomotorInDTO entrada ) {
+  public List<SoatDTO> consultaSoat(@RequestBody AutomotorInDTO entrada) {
     return automotorRepository.consultarPorSoat(entrada.getPlaca());
-  } 
+  }
+
+  /**
+   * Servicio para obtener la informacion general del vehiculo
+   *
+   * @return Lista de detalle de automotorres
+   */
+  @PostMapping(path = "/consultaRTM", produces = MediaType.APPLICATION_JSON_VALUE)
+  public List<RtmDTO> consultaRTM(@RequestBody AutomotorInDTO entrada) {
+    return automotorRepository.consultarPorRTM(entrada.getPlaca());
+  }
 }

@@ -99,30 +99,36 @@ import lombok.Setter;
           AND persona_nrodocume = :numeroDocumento
         order by LICECONDU_FECHEXPED DESC
                                     """),
-    @NamedNativeQuery(name="Persona.detalleLicencia", query="""
-      SELECT 
-      CASE WHEN CATLICCON_CATEGORIA_IDCATEGOR IS NULL 
+  @NamedNativeQuery(
+      name = "Persona.detalleLicencia",
+      query =
+          """
+      SELECT
+      CASE WHEN CATLICCON_CATEGORIA_IDCATEGOR IS NULL
            THEN LICECONDU_CATEGORIA_IDCATEGOR
            ELSE CATLICCON_CATEGORIA_IDCATEGOR
       END AS CATEGORIA,
-      LICECONDU_CATEANTER categoriaAnterior 
-      ,CASE WHEN CATLICCON_FECHEXPED IS NULL 
+      LICECONDU_CATEANTER categoriaAnterior
+      ,CASE WHEN CATLICCON_FECHEXPED IS NULL
             THEN LICECONDU_FECHEXPED
             ELSE CATLICCON_FECHEXPED
       END fechaExpedicion
-      ,CASE WHEN CATLICCON_FECHVENCI IS NULL 
+      ,CASE WHEN CATLICCON_FECHVENCI IS NULL
             THEN LICECONDU_FECHVENCI
             ELSE CATLICCON_FECHVENCI
       END fechaVencimiento
-      FROM RUNTPROD.EV_LICECONDU 
+      FROM RUNTPROD.EV_LICECONDU
       JOIN runtprod.tr_persona ON persona_idpersona=LICECONDU_PERSNATUR_IDPERSONA
-      LEFT JOIN RUNTPROD.RC_CATLICCON ON LICECONDU_NROLICENC=CATLICCON_LICECONDU_NROLICENC 
+      LEFT JOIN RUNTPROD.RC_CATLICCON ON LICECONDU_NROLICENC=CATLICCON_LICECONDU_NROLICENC
      WHERE LICECONDU_NROLICENC=:nroLicencia
        AND persona_tipoident_idtipdoc = :tipoDocumento
              AND persona_nrodocume = :numeroDocumento
         """),
-    @NamedNativeQuery(name="Persona.solicitudes", query="""
-      SELECT 
+  @NamedNativeQuery(
+      name = "Persona.solicitudes",
+      query =
+          """
+      SELECT
           DISTINCT SOLICITUD_IDENSOLIC AS idSolicitud ,
           SOLICITUD_PLACA_NUMPLACA AS identificaddor ,
           SOLICITUD_FECHREGIS AS fechaRegistro ,

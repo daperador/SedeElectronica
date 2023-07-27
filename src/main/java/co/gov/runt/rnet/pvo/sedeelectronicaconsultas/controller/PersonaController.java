@@ -66,9 +66,12 @@ public class PersonaController {
    */
   @PrintLogs(methodName = "Obtener detalle licencia")
   @PostMapping(path = "/detalleLicencia", produces = MediaType.APPLICATION_JSON_VALUE)
-  public List<DetalleLicenciaDTO> consultaDetalleLicencia(@RequestBody LicenciaInDTO entrada) throws ElementoNoEncontradoException {
-    return personaRepository.consultaDetalleLicencia(entrada.getNroLicencia(),
-        informacionUsuario.getTipoDocUsuario(), informacionUsuario.getNumDocUsuario());
+  public List<DetalleLicenciaDTO> consultaDetalleLicencia(@RequestBody LicenciaInDTO entrada)
+      throws ElementoNoEncontradoException {
+    return personaRepository.consultaDetalleLicencia(
+        entrada.getNroLicencia(),
+        informacionUsuario.getTipoDocUsuario(),
+        informacionUsuario.getNumDocUsuario());
   }
 
   /**
@@ -83,6 +86,4 @@ public class PersonaController {
     return personaRepository.consultaSolicitud(
         informacionUsuario.getTipoDocUsuario(), informacionUsuario.getNumDocUsuario());
   }
-
-
 }

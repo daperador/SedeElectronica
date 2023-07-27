@@ -6,6 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AutomotorInDTO {
-    public Long idAutomotor;
-    public String placa;
+  public Long idAutomotor;
+  public String placa;
 }

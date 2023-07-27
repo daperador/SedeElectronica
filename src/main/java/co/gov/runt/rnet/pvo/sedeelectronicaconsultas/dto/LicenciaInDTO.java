@@ -6,5 +6,5 @@ import lombok.Setter;
 @Getter
 @Setter
 public class LicenciaInDTO {
-    private String nroLicencia;
+  private String nroLicencia;
 }

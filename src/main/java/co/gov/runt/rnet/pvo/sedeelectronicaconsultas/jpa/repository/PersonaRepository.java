@@ -25,7 +25,8 @@ public interface PersonaRepository extends JpaRepository<PersonaEntity, Long> {
   public List<LicenciaDTO> consultaLicencias(String tipoDocumento, String numeroDocumento);
 
   @Query(name = "Persona.detalleLicencia", nativeQuery = true)
-  public List<DetalleLicenciaDTO> consultaDetalleLicencia(String nroLicencia, String tipoDocumento, String numeroDocumento);
+  public List<DetalleLicenciaDTO> consultaDetalleLicencia(
+      String nroLicencia, String tipoDocumento, String numeroDocumento);
 
   @Query(name = "Persona.solicitudes", nativeQuery = true)
   public List<SolicitudesDTO> consultaSolicitud(String tipoDocumento, String numeroDocumento);
