@@ -4,6 +4,7 @@
  */
 package co.gov.runt.rnet.pvo.sedeelectronicaconsultas.jpa.repository;
 
+import co.gov.runt.rnet.pvo.sedeelectronicaconsultas.dto.CertificadoCRCDTO;
 import co.gov.runt.rnet.pvo.sedeelectronicaconsultas.dto.DetalleLicenciaDTO;
 import co.gov.runt.rnet.pvo.sedeelectronicaconsultas.dto.LicenciaDTO;
 import co.gov.runt.rnet.pvo.sedeelectronicaconsultas.dto.PersonaDTO;
@@ -30,4 +31,10 @@ public interface PersonaRepository extends JpaRepository<PersonaEntity, Long> {
 
   @Query(name = "Persona.solicitudes", nativeQuery = true)
   public List<SolicitudesDTO> consultaSolicitud(String tipoDocumento, String numeroDocumento);
+
+  @Query(name = "Persona.consultaCertificados", nativeQuery = true)
+  public List<CertificadoCRCDTO> consultaCertificados(String tipoDocumento, String numeroDocumento);
+
+  @Query(name = "Persona.consultaCertificadosMedicos", nativeQuery = true)
+  public List<CertificadoCRCDTO> consultaCertificadosMedicos(String tipoDocumento, String numeroDocumento);
 }

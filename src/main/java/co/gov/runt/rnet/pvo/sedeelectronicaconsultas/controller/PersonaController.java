@@ -4,6 +4,7 @@
  */
 package co.gov.runt.rnet.pvo.sedeelectronicaconsultas.controller;
 
+import co.gov.runt.rnet.pvo.sedeelectronicaconsultas.dto.CertificadoCRCDTO;
 import co.gov.runt.rnet.pvo.sedeelectronicaconsultas.dto.DetalleLicenciaDTO;
 import co.gov.runt.rnet.pvo.sedeelectronicaconsultas.dto.LicenciaDTO;
 import co.gov.runt.rnet.pvo.sedeelectronicaconsultas.dto.LicenciaInDTO;
@@ -80,10 +81,33 @@ public class PersonaController {
    * @return Informacion de la persona
    * @throws ElementoNoEncontradoException Error cuando no se pueden consultar los departamentos
    */
-  @PrintLogs(methodName = "Obtener solicitudes ")
   @GetMapping(path = "/informacionSolicitudes", produces = MediaType.APPLICATION_JSON_VALUE)
   public List<SolicitudesDTO> consultaSolicitudes() {
     return personaRepository.consultaSolicitud(
+        informacionUsuario.getTipoDocUsuario(), informacionUsuario.getNumDocUsuario());
+  }
+
+  /**
+   * Servicio para obtener la informacion de los certificados de aptitud fisica y mental
+   *
+   * @return Informacion de la persona
+   * @throws ElementoNoEncontradoException Error cuando no se pueden consultar
+   */
+  @GetMapping(path = "/informacionCertificados", produces = MediaType.APPLICATION_JSON_VALUE)
+  public List<CertificadoCRCDTO> consultaCertificados() {
+    return personaRepository.consultaCertificados(
+        informacionUsuario.getTipoDocUsuario(), informacionUsuario.getNumDocUsuario());
+  }
+
+  /**
+   * Servicio para obtener la informacion de los certificados de aptitud fisica y mental
+   *
+   * @return Informacion de la persona
+   * @throws ElementoNoEncontradoException Error cuando no se pueden consultar
+   */
+  @GetMapping(path = "/informacionCertificadosMedicos", produces = MediaType.APPLICATION_JSON_VALUE)
+  public List<CertificadoCRCDTO> consultaCertificadosMedicos() {
+    return personaRepository.consultaCertificadosMedicos(
         informacionUsuario.getTipoDocUsuario(), informacionUsuario.getNumDocUsuario());
   }
 }

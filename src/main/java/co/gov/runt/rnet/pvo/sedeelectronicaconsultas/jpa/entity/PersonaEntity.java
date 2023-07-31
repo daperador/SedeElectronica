@@ -149,7 +149,42 @@ import lombok.Setter;
         WHERE persona_tipoident_idtipdoc = :tipoDocumento
           AND persona_nrodocume = :numeroDocumento
         ORDER BY SOLICITUD_FECHREGIS DESC, SOLICITUD_IDENSOLIC
-        """)
+        """),
+  @NamedNativeQuery(name = "Persona.ConsultarCertificados", query = """
+    SELECT 
+    CERAPTFIS_NUMECERTI certificado, 
+    ge.EMPRESA_RAZOSOCIA crc, 
+    CERAPTFIS_FECHEXPED fecha,
+    CERAPTFIS_VIGENCIA vigencia,
+    CERAPTFIS_CATEGORIA_IDCATEGOR categoria,
+    pt.TIPOTRAMI_DESCRIPCI tramite,
+    CERAPTFIS_SOLICITUD_IDENSOLIC solicitud,
+    CERAPTFIS_ESTADOCUM_NOMBRE estado
+  FROM runtprod.RC_CERAPTFIS rc
+  JOIN runtprod.tr_persona per on CERAPTFIS_CRCAUTMED_CRCMEDID = per.PERSONA_IDPERSONA 
+  JOIN runtprod.GE_EMPRESA ge ON ge.EMPRESA_PERSONA_IDPERSONA = CERAPTFIS_AUTOTRANS_IDAUTTRA
+  JOIN runtprod.PA_TIPOTRAMI pt ON pt.TIPOTRAMI_CODTRAMIT =rc.CERAPTFIS_TIPOTRAMI_CODTRAMIT
+  WHERE per.PERSONA_TIPOIDENT_IDTIPDOC = :tipoDocumento
+    AND per.PERSONA_NRODOCUME = :numeroDocumento
+      """),
+  @NamedNativeQuery(name = "Persona.ConsultarCertificadosMedicos", query = """
+    SELECT * FROM (
+      SELECT CERAPTFIS_NUMECERTI certificado, 
+        ge.EMPRESA_RAZOSOCIA crc, 
+        CERAPTFIS_FECHEXPED fecha,
+        CERAPTFIS_VIGENCIA vigencia,
+        CERAPTFIS_CATEGORIA_IDCATEGOR categoria,
+        pt.TIPOTRAMI_DESCRIPCI tramite,
+        CERAPTFIS_SOLICITUD_IDENSOLIC solicitud,
+        CERAPTFIS_ESTADOCUM_NOMBRE estado 
+      FROM runtprod.RC_CRCAUTMED rc 
+      JOIN runtprod.RC_CERAPTFIS rca ON rca.CERAPTFIS_CRCAUTMED_CRCMEDID = rc.CRCAUTMED_CRCMEDID  
+      JOIN runtprod.GE_EMPRESA ge ON ge.EMPRESA_PERSONA_IDPERSONA = CERAPTFIS_AUTOTRANS_IDAUTTRA
+      JOIN runtprod.PA_TIPOTRAMI pt ON pt.TIPOTRAMI_CODTRAMIT =rca.CERAPTFIS_TIPOTRAMI_CODTRAMIT
+      WHERE CRCAUTMED_MEDICO_IDTIPIDE=:tipoDocumento
+        AND CRCAUTMED_MEDICO_NRODOCUME=:numeroDocumento
+      ORDER BY CERAPTFIS_FECHEXPED DESC ) where rownum<=200
+      """)
 })
 @Getter
 @Setter
