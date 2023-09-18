@@ -36,5 +36,6 @@ public interface PersonaRepository extends JpaRepository<PersonaEntity, Long> {
   public List<CertificadoCRCDTO> consultaCertificados(String tipoDocumento, String numeroDocumento);
 
   @Query(name = "Persona.consultaCertificadosMedicos", nativeQuery = true)
-  public List<CertificadoCRCDTO> consultaCertificadosMedicos(String tipoDocumento, String numeroDocumento);
+  public List<CertificadoCRCDTO> consultaCertificadosMedicos(
+      String tipoDocumento, String numeroDocumento);
 }
